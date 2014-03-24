@@ -1,0 +1,298 @@
+p {
+    font-family:$font-family;
+    font-size:$font-size;
+    line-height:$line-height;
+}
+
+h1 {
+    font-size:$h1-size;
+    line-height:$h1-size*1.2;
+    margin:$h1-size/3 0px;
+}
+h2 {
+    font-size:$h2-size;
+}
+h3 {
+    font-size:$h3-size;
+}
+h4 {
+    font-size:$h4-size;
+}
+h5 {
+    font-size:$h5-size;
+}
+h6 {
+    font-size:$h6-size;
+}
+
+nav {
+    border-bottom:$menu-bar-border;
+    background-color:$menu-bar-background-color;
+
+    > ul {
+        > li {
+            > a {
+                font-family:$menu-bar-font-family;
+                font-size:$menu-bar-font-size;
+                color:$menu-bar-link-color;
+                text-decoration:none;
+                font-weight:$menu-bar-font-weight;
+
+                // Transition the color on howver
+                transition:color 0.25s;
+
+                &:hover {
+                    color:$menu-bar-link-hover-color;
+                }
+
+                &.current {
+                    border-bottom:1px solid $menu-bar-link-hover-color;
+                }
+            }
+        }
+    }
+}
+
+div.content.annotated {
+    div.doc {
+        * {
+            font-family:$annotated-font-family;
+            font-size:$annotated-font-size;
+            line-height:$annotated-line-height;
+        }
+
+        h1 {
+            $size: $h1-size - ($font-size - $annotated-font-size);
+            font-size:$size;
+            line-height:$size*1.2;
+            margin:$size/3 0px;
+
+            font-family:$header-font-family;
+        }
+
+        h2 {
+            $size: $h2-size - ($font-size - $annotated-font-size);
+            font-size:$size;
+            line-height:$size*1.2;
+            margin:$size/3 0px;
+
+            font-family:$header-font-family;
+        }
+        h3 {
+            $size: $h3-size - ($font-size - $annotated-font-size);
+            font-size:$size;
+            line-height:$size*1.2;
+            margin:$size/3 0px;
+
+            font-family:$header-font-family;
+        }
+        h4 {
+            $size: $h4-size - ($font-size - $annotated-font-size);
+            font-size:$size;
+            line-height:$size*1.2;
+            margin:$size/3 0px;
+
+            font-family:$header-font-family;
+        }
+        h5 {
+            $size: $h5-size - ($font-size - $annotated-font-size);
+            font-size:$size;
+            line-height:$size*1.2;
+            margin:$size/3 0px;
+
+            font-family:$header-font-family;
+        }
+        h6 {
+            $size: $h6-size - ($font-size - $annotated-font-size);
+            font-size:$size;
+            line-height:$size*1.2;
+            margin:$size/3 0px;
+
+            font-family:$header-font-family;
+        }
+    }
+
+    div.code {
+        pre, pre > span {
+            font-family:$code-font-family;
+            font-size:$code-font-size;
+            line-height:$code-line-height;
+        }
+    }
+}
+
+div.background {
+    background:$code-background-color;
+    color:$base1;
+    box-shadow:inset 10px 0px 10px -10px rgba(0,0,0,.2);
+}
+
+div.code {
+    background-color:$base3;
+    box-shadow:inset 0px 0px 10px rgba(0,0,0,0);
+
+    @media #{$media-not-small} {
+        background:transparent;
+        box-shadow:none;
+    }
+}
+
+div.highlight span.cs {
+    color:$base01;
+    font-weight:700;
+    font-style:italic;
+}
+
+div.highlight span.err {
+    color:#dc322f;
+    background:none;
+}
+
+div.highlight span.k {
+    color:#cb4b16;
+}
+
+div.highlight span.p {
+    color:$base1;
+}
+
+div.highlight span.ow {
+    color:#2aa198;
+    font-weight:700;
+}
+
+div.highlight span.gd {
+    color:$base1;
+    background-color:#372c34;
+    display:inline-block;
+}
+
+div.highlight span.gd .x {
+    color:$base1;
+    background-color:#4d2d33;
+    display:inline-block;
+}
+
+div.highlight span.ge {
+    color:$base1;
+    font-style:italic;
+}
+
+div.highlight span.gh {
+    color:$base01;
+}
+
+div.highlight span.gi {
+    color:$base1;
+    background-color:#1a412b;
+    display:inline-block;
+}
+
+div.highlight span.gi .x {
+    color:$base1;
+    background-color:#355720;
+    display:inline-block;
+}
+
+div.highlight span.go {
+    color:#888;
+}
+
+div.highlight span.gp {
+    color:#555;
+}
+
+div.highlight span.gu {
+    color:#6c71c4;
+}
+
+div.highlight span.kc {
+    color:#859900;
+    font-weight:700;
+}
+
+div.highlight span.kp {
+    color:#cb4b16;
+    font-weight:700;
+}
+
+div.highlight span.kr {
+    color:#d33682;
+    font-weight:700;
+}
+
+div.highlight span.nc {
+    color:#d33682;
+}
+
+div.highlight span.ni {
+    color:purple;
+}
+
+div.highlight span.bp {
+    color:#999;
+}
+
+div.highlight span.vc {
+    color:teal;
+}
+
+div.highlight span.w {
+    color:#bbb;
+}
+
+div.highlight span.se {
+    color:#dc322f;
+}
+
+div.highlight span.ss {
+    color:#990073;
+}
+
+div.highlight span.gd,div.highlight span.gd .x,div.highlight span.gi,div.highlight span.gi .x {
+    display:inline-block;
+    width:100%;
+}
+
+div.highlight span.c,div.highlight span.cm,div.highlight span.cp,div.highlight span.c1 {
+    color:$base01;
+    font-style:italic;
+}
+
+div.highlight span.o,div.highlight span.gs {
+    color:$base1;
+    font-weight:700;
+}
+
+div.highlight span.gr,div.highlight span.gt {
+    color:#a00;
+}
+
+div.highlight span.kd,div.highlight span.n,div.highlight span.na,div.highlight span.vg,div.highlight span.vi,div.highlight span.nv,div.highlight span.si {
+    color:#268bd2;
+}
+
+div.highlight span.kt,div.highlight span.mf,div.highlight span.m,div.highlight span.mh,div.highlight span.mi,div.highlight span.s,div.highlight span.sd,div.highlight span.s2,div.highlight span.sr,div.highlight span.s1 {
+    color:#2aa198;
+}
+
+div.highlight span.nb,div.highlight span.nl {
+    color:#859900;
+}
+
+div.highlight span.no,div.highlight span.nn,div.highlight span.nx {
+    color:#b58900;
+}
+
+div.highlight span.ne,div.highlight span.nf,div.highlight span.nt {
+    color:#268bd2;
+    font-weight:700;
+}
+
+div.highlight span.mo,div.highlight span.il {
+    color:#099;
+}
+
+div.highlight span.sb,div.highlight span.sc,div.highlight span.sh,div.highlight span.sx {
+    color:#d14;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Project documentation &gt; Home</title>
+    <link rel="stylesheet" type="text/css" href="<%= stylesheet_url(file) %>" />
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Source+Sans+Pro' rel='stylesheet' type='text/css'>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <% @menu_items.each do |item| %>
+          <% current = is_current_path file, item[:output] %>
+          <% if item[:output] %>
+            <li><a class="<%= current ? "current" : "" %>" href="<%= relative_link(file, item[:output]) %>"><%= item[:name] %></a></li>
+          <% else %>
+            <li><a><%= item[:name] %></a></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </nav>
+    <%= yield %>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+// Horizontal menu bar
+$menu-bar-normal-height:50px;
+$menu-bar-slim-height:35px;
+
+// Content sizing
+$content-padding:10px;
+$content-max-width:800px;
+
+// Media queries
+$media-slim: "only screen and (max-height: 400px)";
+
+$media-large: "only screen and (min-width: 1200px)";
+$media-small: "only screen and (max-width: 1000px)";
+$media-not-small: "only screen and (min-width: 1001px)";
+$media-tiny: "only screen and (max-width: 400px)";
+$media-not-tiny: "only screen and (min-width: 401px)";
+
+// Solarized colors
+$base03:    #002b36;
+$base02:    #073642;
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+
+// Colors
+$light-blue: rgba(55,151,226,1);
+//$blue: darken($light-blue, 10%);
+
+// General styling
+$font-family: 'Lora', Times, serif;
+$font-size: 18px;
+$line-height: 28px;
+$header-font-family:'Source Sans Pro', 'Helvetive neue', 'Helvetica', Arial, sans-serif;
+
+// Annotated comments style
+$annotated-font-family:$font-family;
+$annotated-font-size:14px;
+$annotated-line-height:20px;
+
+// Code style
+$code-font-family:Menlo, Monaco, Consolas, "Lucida Console", monospace;
+$code-font-size:12px;
+$code-line-height:$annotated-line-height;
+
+// Code the,e
+$code-background-color:$base3;
+$code-color:$base0;
+
+$h1-size: 36px;
+$h2-size: 30px;
+$h3-size: 28px;
+$h4-size: 24px;
+$h5-size: 20px;
+$h6-size: 18px;
+
+// Menu bar style
+$menu-bar-border:1px solid rgba(0,0,0,0.10);
+$menu-bar-background-color:rgba(255,255,255,0.95);
+$menu-bar-link-color:gray;
+$menu-bar-link-hover-color:darken($light-blue, 10%);
+$menu-bar-font-size:17px;
+$menu-bar-font-family:$header-font-family;
+$menu-bar-font-weight:400;
+
+@import "layout";
+@import "theme";

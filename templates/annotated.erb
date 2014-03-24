@@ -1,0 +1,13 @@
+<div class="content annotated">
+  <div class="background"></div>
+  <ul class="sections">
+    <% content.each do |section| %>
+      <li class="section">
+        <div class="doc"><%= section[:doc] %></div>
+        <% unless section[:code].empty? %>
+        <div class="code"><%= section[:code] %></div>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
