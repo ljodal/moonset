@@ -15,6 +15,7 @@ require 'tilt'
 
 require './lib/moonset/helpers/url'
 require './lib/moonset/rocco'
+require './lib/moonset/job_manager'
 
 # This is a part of the Moonset module
 module Moonset
@@ -37,12 +38,6 @@ module Moonset
       # Call super to initialize the Markdown rendering
       super()
 
-      # We need an empty hash for the files to be parsed
-      # During parsing, any new files found will be added
-      # to this array and then in turned parsed so that all
-      # internal links will be valid
-      @files = []
-
       # We also need to know which files have already been
       # rendered, so we have an array for that too. This
       # way we can check if a requested input file has
@@ -56,8 +51,20 @@ module Moonset
       # all output files. It includes a header and a footer
       @layout = Tilt.new("./templates/layout.erb")
 
+      # We default to not using workers, this can be
+      # changed through the configuration file, see
+      # [config.rb](ref:config.rb).
+      @use_workers = false
+      @worker_count = 2
+
       # If a configuration file is specified, parse it
       parse_config(opts[:config_file]) if opts[:config_file]
+
+      # We need an empty hash for the files to be parsed
+      # During parsing, any new files found will be added
+      # to this array and then in turned parsed so that all
+      # internal links will be valid
+      @manager = JobManager.new use_workers: @use_workers
     end
 
     def run
@@ -69,14 +76,45 @@ module Moonset
       # If any new files are discovered during parsing,
       # e.g. through a ref: link in a file, it will be
       # added to the file list.
-      parse_files
+      #
+      # If use_workers is set to true, we now fork and run
+      # multiple threads to process the files.
+      if @use_workers
+        fork do
+          @worker_count.times do
+            fork do
+              # Connect to the Rinda server
+              @manager.connect
+
+              # Parse files
+              parse_files
+
+              @manager.disconnect
+              exit
+            end
+          end
+
+          Process.wait
+          exit
+        end
+
+        # Wait for all child processes to finish their work
+        Process.wait
+
+        # Stop the DRb service
+        DRb.stop_service
+      else
+        parse_files
+      end
     end
 
     def erb(template, output, content)
+      puts "Writing #{output}"
       f = File.open(output, "w")
       f.write @layout.render(self, {file: output}) {
         Tilt.new("./#{template}.erb").render(self, {content: content})
       }
+      f.sync
       f.close
     end
 
@@ -102,6 +140,18 @@ module Moonset
     end
 
     #
+    # Use workers. If this is set to truw, the worker will
+    # perform a fork and process files in parallel.
+    #
+    def use_workers(bool)
+      @use_workers = bool
+    end
+
+    def worker_count(num)
+      @worker_count = num
+    end
+
+    #
     # ## Markdown rendering overrides
     #
 
@@ -114,10 +164,7 @@ module Moonset
         output = "#{input}.html"
 
         # Add the file to the list of files to be parsed
-        @files << {
-          input: input,
-          output: output
-        }
+        @manager.add_file input, output
 
         # Change the link location
         link = output
@@ -167,10 +214,7 @@ module Moonset
           output = "#{item[:file]}.html"
 
           # Add the file to the list of output files.
-          @files << {
-            input: item[:file],
-            output: output
-          }
+          @manager.add_file item[:file], output
 
           # Set the output path of the item
           item[:output] = output
@@ -183,33 +227,38 @@ module Moonset
     # the @files array
     #
     def parse_files
-      while not @files.empty?
-
+      while not @manager.empty?
         # Get the first file from the list
-        file = @files.shift
+        input, output = @manager.get_file
+
+        unless input and output
+          break
+        end
 
         # Check that the file exists
-        unless File.exists? file[:input]
+        unless File.exists? input
           print "WARNING: ".yellow
-          print "Non-existing file referenced: '#{file[:input]}', "
+          print "Non-existing file referenced: '#{input}', "
           print "one or more links will be broken!\n"
           next
         end
 
         # Determine type and then call the parse function
-        ext = File.extname(file[:input])
+        ext = File.extname(input)
         case ext
         when ".rb"
-          render_annotated(file[:input], file[:output], 'ruby')
+          render_annotated(input, output, 'ruby')
         when ".md"
-          render_markdown(file[:input], file[:output])
+          render_markdown(input, output)
         when ".rst"
           puts "reStructuredText file"
         else
           puts "Unknown file type"
         end
 
-        @rendered_files << file
+        #@rendered_files << file
+
+        puts "Finished processing #{input}"
       end
     end
 
@@ -229,11 +278,22 @@ module Moonset
       print "INFO: ".cyan
       print "Rendering #{type} file #{input} to #{output}\n"
 
-      rocco = Rocco.new(@md, language: type)
+      begin
+        puts "#{input}"
+        rocco = Rocco.new(@md, language: type)
 
-      content = rocco.highlight(rocco.parse(File.read(input)))
+        puts "rocco"
+        content = rocco.highlight(rocco.parse(File.read(input)))
+        puts "template"
 
-      erb("templates/annotated", "#{@out}/#{output}", content)
+        erb("templates/annotated", "#{@out}/#{output}", content)
+      rescue => e
+        puts "An error occured"
+        puts e
+        puts $@
+      ensure
+        puts "We have now finished #{input}"
+      end
     end
   end
 end

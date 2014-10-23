@@ -245,7 +245,10 @@ module Moonset
     # Take the result of `split` and apply Markdown formatting to comments and
     # syntax highlighting to source code.
     def highlight(blocks)
-      blocks.map do |block|
+      puts "Highlight code now"
+
+      ret = []
+      for block in blocks
         doc, code = block
 
         # Process the code
@@ -254,14 +257,17 @@ module Moonset
           code = Pygmentize.process(code, @options[:language])
         end
 
-        # Process the documentation
         doc = @md.render(doc.join("\n"))
 
-        {
+        ret << {
           doc: doc,
           code: code
         }
       end
+
+      puts "Hello"
+
+      ret
     end
   end
 end

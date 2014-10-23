@@ -49,3 +49,17 @@ menu_item [
 # directory if a full path is not given. Defaults to "doc"
 #
 output_directory "docs"
+
+#
+# ## Workers
+#
+
+#
+# This will enable workers, allowing multiple processes to
+# run in parallel and process files. This way the
+# time it takes to generate the output will be greatly
+# reduced for larger projects, especially if annotated
+# source files are used.
+#
+use_workers false
+worker_count 1
